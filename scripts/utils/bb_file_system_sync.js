@@ -11,6 +11,8 @@ BBFileSystemSync = function(method, model, options) {
 	// this is a read only sync, no saving for now
 	switch (method) {
         case "read":
+			console.log("BBFileSystemSync attempt to read", model.file_path);
+
             Readium.FileSystemApi(function(api) {
             	api.readTextFile(model.file_path, function(a,b) {
             		options.success(a);

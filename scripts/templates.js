@@ -75,10 +75,22 @@ templates['library_item_template'] = template(function (Handlebars,depth0,helper
   foundHelper = helpers.orUnknown;
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "orUnknown", stack1, {hash:{}});
   buffer += escapeExpression(stack1) + "</div>		\n	</div>\n	\n	<img class='cover-image read' src='";
+  
+  
   stack1 = depth0.data;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.cover_href;
+  
+ 	var href = "";
+	Readium.LibraryApi(function(api) {
+		href = api.getCoverHref(depth0.data);
+	});
+		
+		
+  
+  stack1 = stack1 == null || stack1 === false ? stack1 : href;//   stack1.cover_href;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "' width='150' height='220' alt='Open ePUB ";
+  
+  
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
@@ -86,7 +98,7 @@ templates['library_item_template'] = template(function (Handlebars,depth0,helper
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.key;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"info-icon\" aria-pressed=\"true\" data-toggle=\"modal\" role=\"button\">\n		<img class='info-icon pull-right' src='/images/library/info-icon.png' height=\"39px\" width=\"39px\" alt='";
+  buffer += escapeExpression(stack1) + "\" class=\"info-icon\" aria-pressed=\"true\" data-toggle=\"modal\" role=\"button\">\n		<img class='info-icon pull-right' src='./images/library/info-icon.png' height=\"39px\" width=\"39px\" alt='";
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
@@ -110,7 +122,7 @@ templates['library_item_template'] = template(function (Handlebars,depth0,helper
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "' class='modal fade details-modal'>\n<div class=\"offscreenText\"> Details Start </div>\n	<div class=\"pull-left modal-cover-wrap\">\n		<img class='details-cover-image' src='";
   stack1 = depth0.data;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.cover_href;
+  stack1 = stack1 == null || stack1 === false ? stack1 : href;//stack1.cover_href;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "' width='150' height='220' alt='ePUB cover'>\n		<div class=\"caption modal-buttons\">\n			<a href=\"#\" class=\"btn read\" data-book='<%= data.key %>' role='button'>";
   foundHelper = helpers.fetchInzMessage;
@@ -196,7 +208,7 @@ templates['library_items_template'] = template(function (Handlebars,depth0,helpe
   buffer += "<div id='empty-message'>\n	<p id='empty-message-text' class='green'>\n		";
   foundHelper = helpers.fetchInzMessage;
   stack1 = foundHelper ? foundHelper.call(depth0, "i18n_add_items", {hash:{}}) : helperMissing.call(depth0, "fetchInzMessage", "i18n_add_items", {hash:{}});
-  buffer += escapeExpression(stack1) + "\n	</p>\n	<img id='empty-arrow' src='/images/library/empty_library_arrow.png' alt='Try adding an ePUB' />\n</div>";
+  buffer += escapeExpression(stack1) + "\n	</p>\n	<img id='empty-arrow' src='./images/library/empty_library_arrow.png' alt='Try adding an ePUB' />\n</div>";
   return buffer;});
 templates['ncx_nav_template'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

@@ -1,12 +1,13 @@
-Readium.FileSystemApi = function(initCallback) {
+Readium.TmpFileSystemApi = function(initCallback) {
 	
 	var _fs;
-	var FILE_SYSTEM_SIZE = 1024 * 1024 * 80; // ~ 80 megaBytes
+	var FILE_SYSTEM_SIZE = 1024 * 1024 * 200; // ~ 200 megaBytes
+	var FILE_SYSTEM_TYPE = window.TEMPORARY;
 	
 	// Initialize the persistent storage file system ONLY after
 	// the user has already granted permission
 	var openFileSystem = function( callback ) {
-			window.webkitRequestFileSystem(window.PERSITENT, FILE_SYSTEM_SIZE, function(filesystem) {
+		window.webkitRequestFileSystem(FILE_SYSTEM_TYPE, FILE_SYSTEM_SIZE, function(filesystem) {
 			_fs = filesystem;
 			if ( callback ) {
 				callback(api);
@@ -17,7 +18,7 @@ Readium.FileSystemApi = function(initCallback) {
 	// Ask the user to grant permission to persistent storage
 	// only ever need to run this one time for the life of the application
 	var requestFileSystemAccess = function( callback ) {
-		window.webkitStorageInfo.requestQuota(PERSISTENT, FILE_SYSTEM_SIZE, function(grantedBytes) {
+		window.webkitStorageInfo.requestQuota(FILE_SYSTEM_TYPE, FILE_SYSTEM_SIZE, function(grantedBytes) {
 			FILE_SYSTEM_SIZE = grantedBytes;
 			callback(api);
 		}, function(e) {
@@ -144,23 +145,6 @@ Readium.FileSystemApi = function(initCallback) {
 	
 	var api = {
 		
-		readTextFile: function(path, readCallback, errorCallback) {
-			var that = this;
-			_fs.root.getFile(path, {}, function(fileEntry) {
-
-				that.readEntry(fileEntry, readCallback, errorCallback);
-
-			}, errorCallback || fileSystemErrorHandler);
-		},
-
-
-		getFsUri: function(path, win, fail) {
-			_fs.root.getFile(path, { create: true, exclusive: false }, function(fileEntry) {
-				win(fileEntry.toURL());
-			}, fail || fileSystemErrorHandler);
-		},
-
-		
 		writeFile: function(path, content, successCallback, failureCallback) {
 			var folders = path.split('/');
 			var rootDir = _fs.root;
@@ -187,10 +171,16 @@ Readium.FileSystemApi = function(initCallback) {
 			}, errorCallback || fileSystemErrorHandler );
 		},
 		
-		
+		readTextFile: function(path, readCallback, errorCallback) {
+			var that = this;
+			_fs.root.getFile(path, {}, function(fileEntry) {
 
+				that.readEntry(fileEntry, readCallback, errorCallback);
+
+			}, errorCallback || fileSystemErrorHandler);
+		},
  		
-		rmdir: function( path ) {
+		rmdir: function(path) {
 			_fs.root.getDirectory(path, {}, function(dirEntry) {
 			    dirEntry.removeRecursively(function() {
 			      console.log('Directory removed.');
@@ -198,6 +188,21 @@ Readium.FileSystemApi = function(initCallback) {
 			}, fileSystemErrorHandler);
 		},
 
+		getFsUri: function(path, win, fail) {
+			console.log(path);
+			_fs.root.getFile(path, {}, 
+				function(fileEntry) {
+					console.log("exists", fileEntry);
+					win(fileEntry.toURL());
+			}, function(err){
+				console.error("File not exists", path);
+				win("error:file_not_exists");
+			} 
+			
+			);
+		},
+		
+		//fail || fileSystemErrorHandler
 		// recursively create dirs from an array of dir names
 		mkdir: createDirsRecursively,
 		
@@ -207,26 +212,11 @@ Readium.FileSystemApi = function(initCallback) {
 
 
 	return function ( callback ) {
-		
 		if(_fs) {
-			// fs is already initialized, nothing to do
-			// execute the callback and stop initialization
 			callback(api);
 			return api;
 		}
-		
-		// query how much file system space we have already been granted
-		webkitStorageInfo.queryUsageAndQuota(webkitStorageInfo.PERSITENT, function(used, remaining) {			
-			if( remaining > 0 ) {
-				openFileSystem(callback);
-			}
-			else {
-				// never asked before, need to ask for some space
-				requestFileSystemAccess(function() {
-					openFileSystem(callback);
-				});
-			}
-		});		
+		openFileSystem(callback);
 	};
 	
 }();

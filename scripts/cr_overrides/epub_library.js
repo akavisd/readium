@@ -23,16 +23,17 @@ Readium.Models.LibraryItem = Backbone.Model.extend({
 		var key = this.get('key');
 		Lawnchair(function() {
 			var that = this; // <=== capture Lawnchair scope
-			this.get(key, function(book) {
-				if(book) {
+			//this.get(key, function(book) {
+			//	if(book) {
 					Readium.FileSystemApi(function(fs) {
-						fs.rmdir(book.key);
+						fs.rmdir(key);
 						that.remove(key);
 					});
-				}
-			});
+			//	}
+			//});
 
 			// Remove the viewer preferences as well
+	
 			propertiesKey = key + "_epubViewProperties";
 			this.get(propertiesKey, function(epubViewProperties) {
 				if(epubViewProperties) {
@@ -43,6 +44,7 @@ Readium.Models.LibraryItem = Backbone.Model.extend({
 				}
 			});
 		});
+		
 	}
 });
 
@@ -88,6 +90,7 @@ Readium.Views.LibraryItemView = Backbone.View.extend({
 		},
 
 		"click .read": function(e) {
+			e.preventDefault();
 			this.model.openInReader();
 		}
 		
@@ -225,9 +228,11 @@ Readium.Views.ReadiumOptionsView = Backbone.View.extend({
 						"paginate_everything": paginate});
 		},
 
-		save: function() {
+		save: function(e) {
+			e.preventDefault();
 			this.model.save();
 			this.$el.modal("hide");
+			
 		}
 
 });
@@ -266,6 +271,7 @@ Readium.Views.FilePickerView = Backbone.View.extend({
 		this.$('input').val("");
 	},
 
+
 	handleUrl: function(evt) {
 		var input = document.getElementById('book-url');
 		if(input.value === null || input.value.length < 1) {
@@ -280,9 +286,43 @@ Readium.Views.FilePickerView = Backbone.View.extend({
 	},
 
 	handleFileSelect: function(evt) {
+		var self  = this;
 		var files = evt.target.files; // FileList object
-		var extractor = new Readium.Models.ZipBookExtractor({file: files[0], src_filename: files[0].name});
-		this.beginExtraction(extractor);
+		Readium.LibraryApi(function(api){
+			api.uploadFile(files[0], 
+			function(){
+				self.hide();
+				location.reload();
+			},
+			function(){
+			
+			}
+			)
+		})
+		
+		/*
+			var formData = new FormData();
+			formData.append('file', files[0]);
+		
+		
+		$.ajax({
+        url: 'http://bookreader.websolutions.dp.ua/base/upload/', // "http://localhost:8000/upload/",//server script to process data
+        type: 'POST',
+        //Ajax events
+        success: function(){
+				self.hide();
+				location.reload();
+			},
+        // Form data
+        data: formData,
+        //Options to tell JQuery not to process data or worry about content-type
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+		
+		*/
+		
 	},
 
 	handleDirSelect: function(evt) {

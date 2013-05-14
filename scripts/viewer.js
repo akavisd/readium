@@ -167,11 +167,13 @@ else $('#toggle-toc-btn').focus();
 	},	
 	
 	events: {
-		"click #prev-page-button": 	function() { 
+		"click #prev-page-button": 	function(e) { 
+			e.preventDefault();
 			this.model.paginator.v.pages.goLeft();
 		},
-		"click #next-page-button": 	function() { 
-			this.model.paginator.v.pages.goRight();
+		"click #next-page-button": 	function(e) { 
+			e.preventDefault();
+			this.model.paginator.v.pages.goRight(e);
 		}
   	}
 });

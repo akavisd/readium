@@ -134,7 +134,7 @@ Readium.Models.BookExtractorBase = Backbone.Model.extend({
 Readium.Models.ZipBookExtractor = Readium.Models.BookExtractorBase.extend({
 
 	initialize: function() {
-		zip.workerScriptsPath = "../lib/"
+		zip.workerScriptsPath = "./lib/"
 		var file_name = this.get("src_filename");
 		if(!this.get("file")) {
 			throw "A zip file must be specified";

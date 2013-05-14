@@ -2,7 +2,7 @@
 Readium.Routers.ViewerRouter = Backbone.Router.extend({
 
 	routes: {
-		"views/viewer.html?book=:key": "openBook",
+		"classroom/views/viewer.html?book=:key": "openBook",
 		"*splat": "splat_handler"
 	},
 
