@@ -8,23 +8,9 @@ window.Readium = {
 	Routers: {},
 	Utils: {},
 	Init: function() {
-/*
-			window.options = Readium.Models.ReadiumOptions.getInstance();
-			window.optionsView = new Readium.Views.ReadiumOptionsView({model: window.options});
-				
-			window.Library = new Readium.Collections.LibraryItems(window.ReadiumLibraryData);
-			window.lib_view = new Readium.Views.LibraryItemsView({collection: window.Library});
-			//window.fp_view = new Readium.Views.FilePickerView();
-			window.router = new Readium.Routers.ApplicationRouter({collection: window.Library});
 
-			Backbone.history.start({pushState: false});
-			// window.Library.fetch();
-			window.Library.trigger('reset');
-
-*/
 		window.options = Readium.Models.ReadiumOptions.getInstance();
 		window.optionsView = new Readium.Views.ReadiumOptionsView({model: window.options});
-		
 
 		window._library =new Readium.Collections.LibraryItems(window.ReadiumLibraryData);
 		window._lib_view = new Readium.Views.LibraryItemsView({collection: window._library});
@@ -33,23 +19,6 @@ window.Readium = {
 		Backbone.history.start({pushState: false, root: "views/library.html"});
 
 		window._library.trigger('reset');
-
-		// load the library data from localstorage and 
-		// use it trigger a reset event on the library
-		/*
-		_lawnchair = new Lawnchair(function() {
-			this.all(function(all) {
-
-				// Exclude entries in the store that are for epubView properties. These should not be 
-				// rendered in the list of epubs in the library
-				var ePUBList = _.reject(all, function(element) { 
-					return element.key.split("_")[1] === "epubViewProperties";
-				});
-				window._library.reset(ePUBList);							
-			});
-		});
-*/
-		// TODO: this is not how we should do this, we should use a proper backbone view.
 
 		var hc = $('#library-items-container').hasClass("row-view");
 		$("#block-view-btn").attr('aria-pressed', hc ? 'false' : 'true');
@@ -80,7 +49,6 @@ window.Readium = {
 
 $(function() {
 	window.chrome.i18n.init();
-
 
 	Readium.LibraryApi(function(api) {
 		api.getLibraryMeta(function(result) {

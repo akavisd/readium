@@ -1,6 +1,3 @@
-// This is the namespace and initialization code that is used by
-// by the epub viewer of the chrome extension
-
 window.Readium = {
 	Models: {},
 	Collections: {},
@@ -14,9 +11,7 @@ window.Readium = {
 };
 
 $(function() {
-	// call the initialization code when the dom is loaded
-	//window.Readium.Init();
-		Readium.LibraryApi(function(api) {
+	Readium.LibraryApi(function(api) {
 		api.getLibraryMeta(function(result) {
 				window.ReadiumLibraryData = JSON.parse(result);
 				window.Readium.Init();

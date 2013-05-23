@@ -21,6 +21,20 @@
 
 					<ul class="nav pull-right">
 						<li class="divider-vertical stubby"></li>
+						
+						<li>
+							<div class="controls">
+								<input type="text" id="search-text" class="span3">
+								<a title="Search" href="#" id="search-button" role="button">
+									<img src="./images/top_bar/search.jpg" class="nav-icon" alt="Library"/>
+									<span class="offscreenText">Search</span>
+								</a>
+
+							</div>
+						</li>
+						
+						<li class="divider-vertical stubby"></li>
+						
 						<li>
 							<a title="Library" accesskey="b" href="./views/library.html" id="back-to-lib-button" role="button">
 								<img src="./images/top_bar/ico_library.png" class="nav-icon" alt="Library"/>
@@ -96,17 +110,32 @@
     	</div><!-- end le top bar -->
 
 		<div id="below-navbar">
-    		<div id='readium-toc' style="display: none">
+
+    		<div id='readium-toc' class = "readium-left-panel" style="display: none">
     			<div class="offscreenText"> Table of Contents Start </div>
-    			<div id="toc-header">
-    				<span id="close-toc-button" tabindex="0" role="button">
+    			<div id="toc-header" class="left-panel-header">
+    				<span id="close-toc-button" class="close-left-panel-button" tabindex="0" role="button">
 						<span class="offscreenText">Close Table of Contents</span>
 					</span>
 	    		</div>
-	    		<div id="toc-body">
+	    		<div id="toc-body" class="left-panel-body">
 	    		</div>
 	    		<div class="offscreenText"> Table of Contents End </div>
 	 		</div> 
+
+    		<div id='readium-search' class = "readium-left-panel" style="display: none">
+    			<div class="offscreenText"> Search results </div>
+    			<div id="search-result-header" class="left-panel-header">
+    				<span id="close-search-result-button" class="close-left-panel-button" tabindex="0" role="button">
+						<span class="offscreenText">Close Search results</span>
+					</span>
+	    		</div>
+	    		<div id="search-result-body" class="left-panel-body">
+	    		</div>
+	    		<div class="offscreenText">Search results End</div>
+	 		</div> 
+
+
 
  			<div id="readium-right-content">
 
@@ -215,11 +244,35 @@
 
 
 		<script src="./scripts/cr_overrides/i8chrome_override.js" type="text/javascript"></script>
+		<script src="./scripts/cr_overrides/xpath-util.js" type="text/javascript"></script>
+
+
 
 		
 	    <script src="./lib/jquery-1.7.1.min.js" type="text/javascript" ></script>
+<!-- 	    <script src="./lib/jquery-1.9.1.js" type="text/javascript" ></script> -->
+	    
+
+		<script type="text/javascript" src="./lib/fullproof/unicode/categ_letters_numbers.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/unicode/normalizer_lowercase_nomark.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/unicode/unicode.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/analyzers.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/normalizers.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/normalizers/english/porter-stemmer.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/misc/dataloader.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/capabilities.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/utils.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/scoring-engine.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/common-engine.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/resultsets.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/storemanager.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/stores/memory_store.js"></script>
+		<script type="text/javascript" src="./lib/fullproof/stores/websql_store.js"></script>
+
 		<!-- This one file: contains a bunch of libs minified and concatenated together -->
 		<script src="./scripts/libs/web_plugins.js" type="text/javascript" ></script>
+
+
 
 		<!-- scripts concatenated and minified via build script -->
 		<!-- Must iclude the namespace code before any application code -->
@@ -235,10 +288,14 @@
 		<script src="./scripts/models/manifest_item.js" type="text/javascript"></script>
 		<script src="./scripts/models/package_document_parser.js" type="text/javascript"></script>
 		<script src="./scripts/models/packageDocument.js" type="text/javascript"></script>
-		<script src="./scripts/models/epub_controller.js" type="text/javascript"></script>
+		
+ 		<script src="./scripts/models/epub_controller.js" type="text/javascript"></script> 
+		<script src="./scripts/cr_overrides/epub_controller.js" type="text/javascript"></script>
 
 		<script src="./scripts/models/options_presenter.js" type="text/javascript"></script>
 		<script src="./scripts/models/toc.js" type="text/javascript"></script>
+		<script src="./scripts/cr_overrides/search_model.js" type="text/javascript"></script>
+		
 		<script src="./scripts/models/smilModel.js" type="text/javascript"></script>
 		<script src="./scripts/models/mediaOverlay.js" type="text/javascript"></script>
 		<script src="./scripts/models/audioClipPlayer.js" type="text/javascript"></script>
@@ -250,11 +307,21 @@
 		<script src="./scripts/cr_overrides/epub_reflowable_pagination_view.js" type="text/javascript"></script>
 	
 		<script src="./scripts/views/pagination_strategies/scrolling_pagination_view.js" type="text/javascript"></script>
-		<script src="./scripts/views/toolbar_view.js" type="text/javascript"></script>
+<!-- 		<script src="./scripts/views/toolbar_view.js" type="text/javascript"></script> -->
+		<script src="./scripts/cr_overrides/toolbar_view.js" type="text/javascript"></script>
+		
 		<script src="./scripts/views/toc_view.js" type="text/javascript"></script>
+		<script src="./scripts/cr_overrides/search_result_view.js" type="text/javascript"></script>
+		
+		
 		<script src="./scripts/views/options_view.js" type="text/javascript"></script>
 		<script src="./scripts/views/fixed_layout_book_zoomer.js" type="text/javascript"></script>
+
 		<script src="./scripts/viewer.js" type="text/javascript"></script>
+		<script src="./scripts/cr_overrides/epub_viewer.js" type="text/javascript"></script>
+		
+		
+		
 <!-- 		<script src="./scripts/routers/crx_viewer_router.js" type="text/javascript"></script> -->
 		<script src="./scripts/cr_overrides/epub_view_router.js" type="text/javascript"></script>
 		
@@ -284,11 +351,12 @@
 		<script src="./scripts/cr_overrides/httpLibraryApi.js" type="text/javascript"></script>
  		<script src="./scripts/cr_overrides/httpZipExtractor.js" type="text/javascript"></script> 
 		<script src="./scripts/cr_overrides/tempFileSystemApi.js" type="text/javascript"></script>
+		<script src="./scripts/cr_overrides/searchApi.js" type="text/javascript"></script>
 		
 		
 		<!-- end scripts -->
 
-		<script src="./scripts/utils/google_analytics_loader.js" type="text/javascript"></script>
+<!-- 		<script src="./scripts/utils/google_analytics_loader.js" type="text/javascript"></script> -->
 
 		<!-- Mathjax has its own deal going on so leave it the F alone -->
 		<script src="./lib/mathjax/MathJax.js?config=readium" type="text/javascript"></script>

@@ -144,6 +144,19 @@ Readium.TmpFileSystemApi = function(initCallback) {
 	};
 	
 	var api = {
+		fileExists: function(path, callBack){
+			var that = this;
+			_fs.root.getFile(path, {}, 
+				function(fileEntry) {
+					callBack(true)
+				}, 
+				function() {
+					callBack(false)
+				} 
+			);
+		
+		
+		},
 		
 		writeFile: function(path, content, successCallback, failureCallback) {
 			var folders = path.split('/');

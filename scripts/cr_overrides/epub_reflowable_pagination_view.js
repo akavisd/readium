@@ -27,6 +27,7 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 
 		this.pages.on("change:current_page", this.pageChangeHandler, this);
 		this.model.on("change:toc_visible", this.windowSizeChangeHandler, this);
+		this.model.on("change:search_result_visible", this.windowSizeChangeHandler, this);
 		this.model.on("repagination_event", this.windowSizeChangeHandler, this);
 		this.model.on("change:current_theme", this.injectTheme, this);
 		this.model.on("change:two_up", this.setUpMode, this);
@@ -47,6 +48,9 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 			// Important: Firefox doesn't recognize e.srcElement, so this needs to be checked for whenever it's required.
 			if (!e.srcElement) e.srcElement = this;
 
+			console.log("ePUB body:", $("#readium-flowing-content").contents()[0].body);
+
+
 			var lastPageElementId = that.injectCFIElements();
 			that.adjustIframeColumns();
 			that.iframeLoadCallback(e);
@@ -59,12 +63,19 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 			//   following a clicked linked, either an internal link, or a link from the table of contents. The intention
 			//   to follow a link should supersede restoring the last-page position, as this should only be done for the 
 			//   case where Readium is re-opening the book, from the library view. 
-			if (hashFragmentId) {
-
+			
+			//if (searchItem)
+			
+			var searchItem = that.model.get("search_item");
+			console.log("searchItem", searchItem);
+			
+			//this.goToHashFragment();
+			if (searchItem){
+				that.goToSearchFragment();
+			}else if (hashFragmentId) {
 				that.goToHashFragment(hashFragmentId);
 			}
 			else if (lastPageElementId) {
-
 				that.goToHashFragment(lastPageElementId);
 			}
 			else {
@@ -167,6 +178,119 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 		// else false alarm no work to do
 	},
 
+
+	goToSearchFragment: function() {
+		var that = this;
+		var searchItem = that.model.get("search_item");
+	
+		if (!searchItem){
+			return;
+		}
+		
+		var body = $("#readium-flowing-content").contents()[0].body;
+		var doc = $("#readium-flowing-content").contents()[0];
+		
+		var el = rdr.util.client.getNodeByXPath(doc)(searchItem.xpath, body);
+		this.model.set("search_element", el);
+		
+		
+		if(!el) {
+        	return;
+		}
+		
+		var prnt = el.parentNode;
+		
+		var doc = el.ownerDocument;
+		
+/*		
+		var nodeList = Array.prototype.slice.call(prnt.children);
+		var idx = nodeList.indexOf(el);
+	*/	
+		//var prevVal = $(prnt).html();
+		
+		var prevVal = el.nodeValue;
+		
+		
+		var txtNode1 = doc.createTextNode(prevVal.substring(0,searchItem.start_offset)); 
+		var txtNode2 = doc.createTextNode(prevVal.substring(searchItem.start_offset)); 
+
+		var span = doc.createElement('span');
+		var anchor = doc.createElement('span');
+		
+		anchor.id = "ANCHOR_NODE";
+		anchor.innerHTML = "X";
+		
+		span.appendChild(txtNode1);
+		span.appendChild(anchor);
+		span.appendChild(txtNode2);
+				
+		prnt.replaceChild(span, el);
+		
+		//var page = this.getElemPageNumber(prnt);
+		var page = this.getElemPageNumber(anchor);
+		
+		prnt.replaceChild(el, span);
+	
+		console.log("page No",page);
+		if (page > 0) {
+			if (this.pages.get("current_page")[0] !== page){
+	        	this.pages.goToPage(page);	
+			}else{
+				this.showSearchFragment()
+			}
+		}
+ },
+ 
+ 
+	showSearchFragment:function(){
+			var that = this;
+	
+	       	var searchItem = that.model.get("search_item");
+		
+			//var body = $("#readium-flowing-content").contents()[0].body;
+			var doc = $("#readium-flowing-content").contents()[0];
+			var el = this.model.get("search_element");
+		
+			var baseLeftOffsetLeft = -1*parseInt(doc.documentElement.offsetLeft);
+			var baseLeftOffsetTop = -1*parseInt(doc.documentElement.offsetTop);
+			
+			if (!searchItem){
+				return;
+			}
+		
+		 	
+		 	var d = doc.createRange(); 
+		 	d.setStart(el, searchItem.start_offset);
+		 	d.setEnd(el, searchItem.end_offset)
+
+			var rangeClientRec = d.getClientRects()[0];
+
+			d.detach();
+
+			var b = doc.createElement("div"); 
+			
+			b.style.position = "absolute";
+			b.style.opacity = 0.5;
+			b.style.backgroundColor = "rgb(10, 206, 200)";
+			
+			b.style.left = (rangeClientRec.left + baseLeftOffsetLeft) + "px"; 
+			b.style.top = (rangeClientRec.top + baseLeftOffsetTop) + "px";
+			b.style.width = rangeClientRec.width + "px";
+			b.style.height = rangeClientRec.height + "px";
+			el.parentNode.appendChild(b);
+ 	 		
+ 	 		//var textNode = $(el.parentNode);
+		 	//textNode.css("background-color", "rgb(230, 250, 240)");
+	
+			that.model.set("search_item", undefined);
+			that.model.set("highlight_div", b);
+	},
+
+
+
+
+
+
 	// ------------------------------------------------------------------------------------ //
 	//  "PRIVATE" HELPERS                                                                   //
 	// ------------------------------------------------------------------------------------ //
@@ -178,6 +302,7 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 		
 		this.pages.off("change:current_page", this.pageChangeHandler);
 		this.model.off("change:toc_visible", this.windowSizeChangeHandler);
+		this.model.off("change:search_result_visible", this.windowSizeChangeHandler);
 		this.model.off("repagination_event", this.windowSizeChangeHandler);
 		this.model.off("change:current_theme", this.windowSizeChangeHandler);
 		this.model.off("change:two_up", this.setUpMode);
@@ -390,6 +515,7 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
             (this.model.get("two_up") && page % 2 === 1)) {
                 this.mediaOverlayController.updatePlaybackForReflowPageChange();
         }
+        
 	},
 
 	setFontSize: function() {
@@ -562,6 +688,13 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 	},
 
 	adjustIframeColumns: function() {
+		var that = this;
+		var selDiv = that.model.get("highlight_div");
+		if (selDiv){
+			selDiv.parentNode.removeChild(selDiv);
+			that.model.set("highlight_div", undefined);
+		}
+	
 		var prop_dir = this.offset_dir;
 		var $frame = this.$('#readium-flowing-content');
 		var page;
@@ -836,7 +969,7 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
                 that.goToPage(that.pages.get("current_page")[0]);
 			}
             that.savePosition();
-
+            that.showSearchFragment();
 		}, 150);
 	},
 
@@ -845,6 +978,8 @@ Readium.Views.ReflowablePaginationView = Readium.Views.PaginationViewBase.extend
 		
 		// Make sure we return to the correct position in the epub (This also requires clearing the hash fragment) on resize.
 		this.goToHashFragment(this.model.get("hash_fragment"));
+		
+		
 	},
     
 	marginCallback: function() {

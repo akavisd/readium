@@ -33,9 +33,7 @@
 
 
 	window.chrome.i18n.getMessage = function(key){
-		
 		var result =  (i8Map[key])?i8Map[key].message:undefined;
-		//console.info("getMessage", key," : ", result);
 		return (result)?result:"";
 	}
 

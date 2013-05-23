@@ -18,41 +18,17 @@ Readium.Routers.ViewerRouter = Backbone.Router.extend({
 //			book_data.root_url = "bla-bla-bla";
 					// initialze the viewer for that book
 			window._epub = new Readium.Models.EPUB(book_data);
-			window._epubController = new Readium.Models.EPUBController(_.extend({epub : window._epub}, book_data));
-			window._applicationView = new Readium.Views.ViewerApplicationView({
+			window._epubController = new Readium.Models.CRController(_.extend({epub : window._epub}, book_data));
+			window._applicationView = new Readium.Views.ViewerEpubApplicationView({
 				model: window._epubController
 			});
 			window._applicationView.render();
-		
-		
 		}
 		else {
 			// did not find the book in our library
 			alert("The book you requested does not exist");
 		}
 
-
-/*
-		if(book_data) {
-			window.AccessService.prototype.prepareResource(		
-				book_data.key,
-				function(){
-					// initialze the viewer for that book
-					window._epub = new Readium.Models.EPUB(book_data);
-					window._epubController = new Readium.Models.EPUBController(_.extend({epub : window._epub}, book_data));
-					window._applicationView = new Readium.Views.ViewerApplicationView({
-						model: window._epubController
-					});
-					window._applicationView.render();
-				}
-			)
-		}
-		
-		else {
-			// did not find the book in our library
-			alert("The book you requested does not exist");
-		}
-*/
 	},
 
 	splat_handler: function(splat) {

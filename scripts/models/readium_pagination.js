@@ -76,6 +76,7 @@ Readium.Models.ReadiumPagination = Backbone.Model.extend({
 
 	goToPage: function(gotoPageNumber) {
 
+		console.log("paginator.goToPage", gotoPageNumber);
 		var pagesToGoto = this.pageNumberDisplayLogic.getGotoPageNumsToDisplay(
 							gotoPageNumber,
 							this.epubController.get("two_up"),
@@ -103,6 +104,7 @@ Readium.Models.ReadiumPagination = Backbone.Model.extend({
 
 		// Clear the hash fragment if the user has decided to navigate away from it
 		this.epubController.set("hash_fragment", undefined);
+		//this.epubController.set("search_item", undefined);
 
 		if (curr_pg[0] <= 1) {
 
@@ -156,6 +158,8 @@ Readium.Models.ReadiumPagination = Backbone.Model.extend({
 
 		// Clear the hash fragment if the user has decided to navigate away from it
 		this.epubController.set("hash_fragment", undefined);
+		//this.epubController.set("search_item", undefined);
+		
 
 		if (curr_pg[curr_pg.length - 1] >= this.get("num_pages")) {
 

@@ -53,7 +53,7 @@ Readium.Views.NcxTocView = Readium.Views.TocViewBase.extend({
 
 		this.$('#toc-body').html("<h2 tabindex='-1'>" + (this.model.get("title") || "Contents") + "</h2>")
 		this.$('#toc-body').append(ol);
-		this.$('#toc-body').append("<div id='toc-end-spacer'>");
+		this.$('#toc-body').append("<div id='toc-end-spacer' class='left-panel-end-spacer'>");
 		return this;
 	},
 
@@ -102,7 +102,7 @@ Readium.Views.XhtmlTocView = Readium.Views.TocViewBase.extend({
 			
 		this.$('#toc-body').html( this.model.get("body").html() );
 		this.formatPageListNavigation();
-		this.$('#toc-body').append("<div id='toc-end-spacer'>");
+		this.$('#toc-body').append("<div id='toc-end-spacer' class='left-panel-end-spacer'>");
 		return this;
 	},
 
