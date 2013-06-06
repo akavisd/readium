@@ -18,14 +18,6 @@ Readium.EpubApi = function(initCallback) {
 	};
 
 
-/*
-	function createDocument(html) {
-	    var doc = document.implementation.createDocument();
-	    doc.write(html);
-	    return doc;
-	}
-*/
-
 	function getCitate(value, anchorIindex){
 		var start = anchorIindex - CITATE_LENGTH/2;
 		start = (start < 0)?0:start;
@@ -70,29 +62,9 @@ Readium.EpubApi = function(initCallback) {
 			var ndsArr = [];
 			
 			for (var i = 0; i < nodes.length; i++){
-				path = rdr.util.client.getXPathByNode2(nodes[i]);
+				path = xPathUtil.getXPathByNode(nodes[i]);
 				ndsArr.push({item:nodes[i], pathObj:path});
 			}
-			
-			/*
-			ndsArr.sort(function(a,b){
-				var aArr = a.pathObj.arrPath;
-				var bArr = b.pathObj.arrPath;
-				
-				var len = Math.max(aArr.length, bArr.length);
-				
-				for (var i = 0; i < len; i++){
-					var v1 = aArr[i] || -1;
-					var v2 = bArr[i] || -1;
-				
-					if (v1 !== v2){
-						return v1 - v2;
-					}
-				}
-				return 0;
-			});
-			
-			*/
 			
 			for (var i = 0; i < ndsArr.length; i++){
 				itemObj = ndsArr[i];
@@ -173,7 +145,6 @@ Readium.EpubApi = function(initCallback) {
 			});
 
         },
-
 
 
         getFsUri: function(path, successCallback, errorCallback) {

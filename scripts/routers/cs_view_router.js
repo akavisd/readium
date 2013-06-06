@@ -3,11 +3,11 @@
 Readium.Routers.ViewerRouter = Backbone.Router.extend({
 
 	routes: {
-		"classroom/views/viewer.html?book=:key": "openBook",
+		"*splat/cs_views/viewer.html?book=:key": "openBook",
 		"*splat": "splat_handler"
 	},
 
-	openBook: function(key) {
+	openBook: function(splat, key) {
 
 		// look up the book by its key in the global array or library data
 		var book_data = _.find(window.ReadiumLibraryData, function(obj) {
@@ -15,11 +15,9 @@ Readium.Routers.ViewerRouter = Backbone.Router.extend({
 		});
 
 		if(book_data) {
-//			book_data.root_url = "bla-bla-bla";
-					// initialze the viewer for that book
 			window._epub = new Readium.Models.EPUB(book_data);
-			window._epubController = new Readium.Models.CRController(_.extend({epub : window._epub}, book_data));
-			window._applicationView = new Readium.Views.ViewerEpubApplicationView({
+			window._epubController = new Readium.Models.CSEpubController(_.extend({epub : window._epub}, book_data));
+			window._applicationView = new Readium.Views.CSViewerApplicationView({
 				model: window._epubController
 			});
 			window._applicationView.render();

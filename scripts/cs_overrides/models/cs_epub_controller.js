@@ -1,5 +1,5 @@
 
-Readium.Models.CRController = Readium.Models.EPUBController.extend({
+Readium.Models.CSEpubController = Readium.Models.EPUBController.extend({
 
 	// ------------------------------------------------------------------------------------ //
 	//  "PUBLIC" METHODS (THE API)                                                          //
@@ -13,7 +13,7 @@ Readium.Models.CRController = Readium.Models.EPUBController.extend({
         
         this.set("media_overlay_controller",  new Readium.Models.MediaOverlayController({epubController : this}));
 
-		this.paginator = new Readium.Models.PaginationStrategySelector({book: this});
+		this.paginator = new Readium.Models.CSPaginationStrategySelector({book: this});
 
 		this.packageDocument = this.epub.getPackageDocument();
 

@@ -1,5 +1,5 @@
 // This is the namespace and initialization code that is used by
-// by the library view of the chrome extension
+// by the library view of the client-side
 
 window.Readium = {
 	Models: {},
@@ -10,11 +10,11 @@ window.Readium = {
 	Init: function() {
 
 		window.options = Readium.Models.ReadiumOptions.getInstance();
-		window.optionsView = new Readium.Views.ReadiumOptionsView({model: window.options});
+		window.optionsView = new Readium.Views.CSReadiumOptionsView({model: window.options});
 
-		window._library =new Readium.Collections.LibraryItems(window.ReadiumLibraryData);
-		window._lib_view = new Readium.Views.LibraryItemsView({collection: window._library});
-		window._fp_view = new Readium.Views.FilePickerView({collection: window._library});
+		window._library =new Readium.Collections.CSLibraryItems(window.ReadiumLibraryData);
+		window._lib_view = new  Readium.Views.CSLibraryItemsView({collection: window._library});
+		window._fp_view = new Readium.Views.CSFilePickerView({collection: window._library});
 		window.router = new Readium.Routers.LibraryRouter({picker: window._fp_view});
 		Backbone.history.start({pushState: false, root: "views/library.html"});
 

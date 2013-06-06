@@ -16,7 +16,7 @@ Readium.HTTPLibraryApi = function(initCallback) {
 				that.resetForm();
 */
 				setTimeout(function() {
-//					chrome.tabs.create({url: "./views/viewer.html?book=" + book.key });
+//					chrome.tabs.create({url: "./cs_views/viewer.html?book=" + book.key });
 					readCallback();
 				}, 800);
 

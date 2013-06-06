@@ -1,15 +1,60 @@
 // REFACTORING CANDIDATE: Parts of this model are making calls to the current view through the epubController->paginator->view->etc., 
 //   that is a lot of indirection. Perhaps epubController shouldn't be at the centre of this model anymore.
 
-Readium.Views.ViewerEpubApplicationView = Readium.Views.ViewerApplicationView.extend({
+Readium.Views.CSViewerApplicationView = Readium.Views.ViewerApplicationView.extend({
 
+
+	
+	
+	
 	initialize: function() {
 	
 		this.model.on("change:search_result_visible", this.renderSearchResultVisible, this);
-		//this.model.on("change:has_search", this.init_list, this);
 		
-		Readium.Views.ViewerApplicationView.prototype.initialize.call(this);
+		//Readium.Views.ViewerApplicationView.prototype.initialize.call(this);
+
 		
+		
+		
+		this.model.on("change:full_screen", this.toggleFullscreen, this);
+
+		this.model.on("change:current_theme", this.renderTheme, this);
+		this.model.on("change:toolbar_visible", this.renderPageButtons, this);
+		this.model.on("change:toc_visible", this.renderTocVisible, this);
+
+		this.optionsPresenter = new Readium.Models.OptionsPresenter({
+			book: this.model
+		});
+		this.optionsView = new Readium.Views.OptionsView({model: this.optionsPresenter});
+		this.optionsView.render();
+
+		// the top bar
+		this.toolbar = new Readium.Views.CSToolbarView({model: _epubController});
+		this.toolbar.render();
+
+		// the table of contents
+		this.model.on("change:has_toc", this.init_toc, this);
+
+		this.addGlobalEventHandlers();
+
+		$('#bar-logo').attr('aria-pressed', 'false');
+		$('#readium-info').on('shown', function(){
+		$('#version-info').focus();
+		setTimeout(function(){
+		$('#bar-logo').attr('aria-pressed', 'true');
+		}, 1);
+		})
+		.on('hidden', function(){
+		setTimeout(function(){
+		$('#bar-logo').attr('aria-pressed', 'false').focus();
+		}, 1);
+		});
+		
+		Acc.title = this.model.get('title') + ', by ' + this.model.get('author');
+		
+		
+		
+		//-------------------
 		this.init_list();	
 	},
 	
