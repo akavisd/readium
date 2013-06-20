@@ -1,4 +1,4 @@
-require "bourbon/generator"
+require "bourbon/generator" 
 
 module Bourbon
   if defined?(Rails)

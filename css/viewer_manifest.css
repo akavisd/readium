@@ -1,7 +1,3 @@
-
-
-/* .search-selection{background-color: rgb(135, 206, 235); position:absolute; background:#999; opacity:.5} */
-
 .clearfix {
   *zoom: 1; }
   .clearfix:before, .clearfix:after {
@@ -1666,7 +1662,7 @@ body {
       padding: 5px; }
 
 /**************** THE TOC PANEL ************************/
-.readium-left-panel {
+#readium-toc {
   position: absolute;
   width: 30%;
   background-color: #eeeeee;
@@ -1685,17 +1681,17 @@ body {
   -webkit-box-shadow: 10px 0px 11px rgba(100, 100, 104, 0.35);
   -moz-box-shadow: 10px 0px 11px rgba(100, 100, 104, 0.35);
   box-shadow: 10px 0px 11px rgba(100, 100, 104, 0.35); }
-  .readium-left-panel ol {
+  #readium-toc ol {
     padding-left: 1.5em; }
 
-.left-panel-body, .left-panel-header {
+#toc-body, #toc-header {
   margin-right: 10px;
   border-right: 1px solid #CCC; }
 
-.left-panel-header {
+#toc-header {
   height: 50px;
   border-bottom: 1px solid #CCC; }
-.close-left-panel-button {
+  #toc-header #close-toc-button {
     height: 36px;
     width: 36px;
     background-image: url("../images/toc/ico_close.png");
@@ -1709,25 +1705,21 @@ body {
     -o-user-select: none;
     user-select: none; }
 
-.left-panel-body {
+#toc-body {
   overflow: scroll;
   height: 100%; }
 
-.left-panel-end-spacer {
+#toc-end-spacer {
   height: 70px; }
 
-.readium-left-panel li {
+#readium-toc li {
   text-align: left;
   margin: 5px;
   list-style: none; }
-  .readium-left-panel li a {
+  #readium-toc li a {
     text-decoration: none;
     color: #111111;
     font-size: 15px; }
-
-
-
-/*---------------------------------------------------------------------*/
 
 .show-readium-toc #readium-right-content {
   width: 70%;
@@ -1868,7 +1860,7 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
   width: 12px;
   height: 12px;
   font-size: 1px;
-  background: url("../images/select2/select2.png") right top no-repeat;
+  background: url("../../images/select2/select2.png") right top no-repeat;
   cursor: pointer;
   text-decoration: none;
   border: 0;
@@ -1932,7 +1924,7 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
   width: 18px; }
 
 .select2-container .select2-choice div b {
-  background: url("../images/select2/select2.png") no-repeat 0 1px;
+  background: url("../../images/select2/select2.png") no-repeat 0 1px;
   display: block;
   width: 100%;
   height: 100%; }
@@ -1953,13 +1945,13 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
   left: -10000px; }
 
 .select2-search input {
-  background: white url("../images/select2/select2.png") no-repeat 100% -22px;
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, -ms-linear-gradient(top, white 85%, #eeeeee 99%);
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, linear, top, white 85%, #eeeeee 99%;
+  background: white url("../../images/select2/select2.png") no-repeat 100% -22px;
+  background: url("../../images/select2/select2.png") no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+  background: url("../../images/select2/select2.png") no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+  background: url("../../images/select2/select2.png") no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+  background: url("../../images/select2/select2.png") no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+  background: url("../../images/select2/select2.png") no-repeat 100% -22px, -ms-linear-gradient(top, white 85%, #eeeeee 99%);
+  background: url("../../images/select2/select2.png") no-repeat 100% -22px, linear, top, white 85%, #eeeeee 99%;
   padding: 4px 20px 4px 5px;
   outline: 0;
   border: 1px solid #aaa;
@@ -2223,7 +2215,7 @@ disabled look for already selected choices in the results dropdown
   width: 12px;
   height: 13px;
   font-size: 1px;
-  background: url("../images/select2/select2.png") right top no-repeat;
+  background: url("../../images/select2/select2.png") right top no-repeat;
   outline: none; }
 
 .select2-container-multi .select2-search-choice-close {

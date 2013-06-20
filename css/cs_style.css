@@ -1,0 +1,61 @@
+.readium-left-panel {
+  position: absolute;
+  width: 30%;
+  background-color: #eeeeee;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: -moz-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: -ms-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: -o-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: linear-gradient(top, #eeeeee, #dddddd);
+  top: 0;
+  z-index: 999;
+  bottom: 0;
+  border-left: 1px solid #DDD;
+  font-size: 0.8em;
+  overflow: hidden;
+  -webkit-box-shadow: 10px 0px 11px rgba(100, 100, 104, 0.35);
+  -moz-box-shadow: 10px 0px 11px rgba(100, 100, 104, 0.35);
+  box-shadow: 10px 0px 11px rgba(100, 100, 104, 0.35); }
+
+.readium-left-panel ol {
+  padding-left: 1.5em; }
+
+.left-panel-body, .left-panel-header {
+  margin-right: 10px;
+  border-right: 1px solid #CCC; }
+
+.left-panel-header {
+  height: 50px;
+  border-bottom: 1px solid #CCC; }
+
+.close-left-panel-button {
+  height: 36px;
+  width: 36px;
+  background-image: url("../images/toc/ico_close.png");
+  display: inline-block;
+  position: absolute;
+  right: 17px;
+  top: 6px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none; }
+
+.left-panel-body {
+  overflow: scroll;
+  height: 100%; }
+
+.left-panel-end-spacer {
+  height: 70px; }
+
+.readium-left-panel li {
+  text-align: left;
+  margin: 5px;
+  list-style: none; }
+
+.readium-left-panel li a {
+  text-decoration: none;
+  color: #111111;
+  font-size: 15px; }
